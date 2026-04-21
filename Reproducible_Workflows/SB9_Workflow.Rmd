@@ -1,0 +1,392 @@
+---
+title: "SB9_Workflow"
+author: "Kamerin Sandlin"
+date: "2026-04-08"
+output: 
+  
+  html_document: default
+  github_document: default
+---
+
+## This is a markdown file detailing my Soybean Virus Validation for soybean sample 9 and its input parameters.
+
+##### The Workflow (Simplified)
+```{r}
+#Raw Sequence Reads > Trimmomatic > Fastqc > Kraken2 > Trinity > BLASTn database > PCR > gel electrophoresis = Identified and Validated Viruses
+```
+
+##### Raw Sequence Reads
+```{r}
+#Raw sequence reads were the beginning input for my work in this project. They were sequenced from RNA samples of soybean tissue by Illumina short-read sequencing at North Carolina State University. 
+```
+
+##### Trimmomatic
+```{r}
+trimmomatic_params <- data.frame(
+  `Input parameter` = c(
+    "Single ended or Paired Ended?",
+    "Input FASTQ file (R1/first of pair)",
+    "Input FASTQ file (R2/second of pair)",
+    "Perform initial Illuminaclip step?",
+    "Select adapter sequence or provide custom?",
+    "Adapter Sequence to use?",
+    "Maximum mismatch count for full match",
+    "Palindrome clip threshold",
+    "Simple clip threshold",
+    "Minimum adapter length (palindrome mode)",
+    "Always keep both reads?",
+    "Operation 1",
+    "Sliding window size",
+    "Sliding window quality threshold",
+    "Operation 2",
+    "Minimum length of reads to be kept",
+    "Quality score encoding",
+    "Output trimlog file?",
+    "Output trimmomatic log messages?"
+  ),
+  Value = c(
+    "pair_of_files",
+    "Soybean9_R1.fastq.gz",
+    "Soybean9_R2.fastq.gz",
+    "true",
+    "standard",
+    "TruSeq3 (paired-ended, MiSeq/HiSeq)",
+    "2",
+    "30",
+    "15",
+    "8",
+    "true",
+    "SLIDINGWINDOW",
+    "4",
+    "25",
+    "MINLEN",
+    "120",
+    "none selected",
+    "false",
+    "false"
+  )
+)
+
+knitr::kable(trimmomatic_params)
+
+# Galaxy Version 0.39+galaxy2
+
+```
+
+##### FastQC
+```{r}
+library(knitr)
+
+SB9fastqc_params <- data.frame(
+  `Input parameter` = c(
+    "Raw read data from history",
+    "Contaminant list",
+    "Adapter list",
+    "Submodule and limit specific file",
+    "Disable grouping of bases for reads >50bp",
+    "Lower limit on sequence length shown in report",
+    "Length of k-mer to look for"
+  ),
+  Value = c(
+    "Soybean9_R1.fastq.gz",
+    "N/A",
+    "N/A",
+    "N/A",
+    "false",
+    "Not available",
+    "7"
+  )
+)
+
+knitr::kable(SB9fastqc_params)
+
+library(knitr)
+
+SB9fastqc_params <- data.frame(
+  `Input parameter` = c(
+    "Raw read data from history",
+    "Contaminant list",
+    "Adapter list",
+    "Submodule and limit specific file",
+    "Disable grouping of bases for reads >50bp",
+    "Lower limit on sequence length shown in report",
+    "Length of k-mer to look for"
+  ),
+  Value = c(
+    "Soybean9_R2.fastq.gz",
+    "N/A",
+    "N/A",
+    "N/A",
+    "false",
+    "Not available",
+    "7"
+  )
+)
+
+knitr::kable(SB9fastqc_params)
+
+# Galaxy Version 0.74+galaxy1
+```
+
+##### Kraken2
+```{r}
+library(knitr)
+
+SB9kraken2_params <- data.frame(
+  `Input parameter` = c(
+    "Single or paired reads",
+    "Input sequences",
+    "Print scientific names instead of taxids",
+    "Confidence threshold",
+    "Minimum base quality",
+    "Minimum hit groups",
+    "Enable quick operation",
+    "Split classified and unclassified outputs",
+    "Print report file",
+    "Kraken2 database"
+  ),
+  Value = c(
+    "false (single-end, multiple datasets)",
+    "Trimmomatic output: Soybean9_R1.fastq.gz; Soybean9_R2.fastq.gz",
+    "false",
+    "0",
+    "0",
+    "2",
+    "false",
+    "true",
+    "false",
+    "viral2019-03"
+  )
+)
+
+knitr::kable(SB9kraken2_params)
+
+# Galaxy Version 2.17.1+galaxy0
+
+#Tool Outputs
+library(knitr)
+
+SB9kraken2_outputs <- data.frame(
+  `Output parameter` = c(
+    "Classified reads",
+    "Unclassified reads",
+    "Classification report"
+  ),
+  Value = c(
+    "Kraken2 on dataset 30: Classified Reads (R1 and R2, two files)",
+    "Kraken2 on dataset 30: Unclassified Reads (R1 and R2, two files)",
+    "Kraken2 on dataset 30: Classification"
+  )
+)
+
+knitr::kable(SB9kraken2_outputs)
+#The two datasets of classified reads (R1 and R2) are what will be used moving forward. 
+
+```
+
+### File Compression Correction
+```{r}
+#Galaxy improperly compresses the files of classified forward and reverse reads, so the reads must be taken out of Galaxy to be properly compressed into gzip format. Here, we do that by downloading the files, uncompressing then compressing them again in the Mac Terminal, and uploading the files back to Galaxy. The following is the MAC TERMINAL CODE to compress the forward and reverse read files, after downloading the files from Galaxy. 
+
+# %cd Desktop
+# mvSB9Classifiedforwardreads.fastsanger.gz SB9Classifiedforwardreads.fastqsanger
+# gzipSB9Classifiedforwardreads.fastqsanger
+#OUTPUT = correctly gzipped forward read file
+
+# mvSB9Classifiedreversereads.fastqsanger.gz SB9Classifiedreversereads.fastqsanger
+# gzipSB9Classifiedreversereads.fastqsanger
+#OUTPUT = Correctly gzipped reverse read file
+```
+
+
+##### Trinity 
+```{r}
+library(knitr)
+
+SB9trinity_params <- data.frame(
+  `Input parameter` = c(
+    "Are you pooling sequence datasets?",
+    "Paired or single-end data?",
+    "Left/forward strand reads",
+    "Right/reverse strand reads",
+    "Strand specific data",
+    "Jaccard clip options",
+    "Run in silico normalization of reads",
+    "Minimum contig length",
+    "Use genome-guided mode",
+    "Minimum count for K-mers to be assembled"
+  ),
+  Value = c(
+    "true",
+    "paired",
+    "SB9Classifiedforwardreads.fastqsanger.gz",
+    "SB9Classifiedreversereads.fastqsanger.gz",
+    "false",
+    "false",
+    "true",
+    "200",
+    "false",
+    "1"
+  )
+)
+
+knitr::kable(SB9trinity_params)
+
+# Galaxy Version 2.15.1+galaxy1
+```
+
+##### BLASTn Database
+```{r}
+library(knitr)
+
+SB9blast_params <- data.frame(
+  `Input parameter` = c(
+    "Query input",
+    "BLAST program",
+    "Database",
+    "Parameter settings",
+    "Hit selection criteria",
+    "Platform"
+  ),
+  Value = c(
+    "Individual Trinity assembled transcripts pasted manually",
+    "blastn",
+    "NCBI nucleotide collection (nr/nt)",
+    "Default",
+    "High percent identity, high query coverage, low E-value",
+    "NCBI web interface"
+  )
+)
+
+knitr::kable(SB9blast_params)
+```
+
+### PCR
+```{r}
+#A PCR mix was setup in order amplify the DNA fragment chosen by the primers that were designed. The following is the PCR Mix setup; 
+
+library(knitr)
+
+pcr_mix <- data.frame(
+  Component = c(
+    "Forward Primer",
+    "Reverse Primer",
+    "dNTP Mix",
+    "Phusion HF Buffer",
+    "Phusion Polymerase",
+    "Water",
+    "cDNA template",
+    "Total Volume"
+  ),
+  `Volume per Reaction` = c(
+    "2.5 µL",
+    "2.5 µL",
+    "1 µL",
+    "10 µL",
+    "0.5 µL",
+    "32.5 µL",
+    "1 µL",
+    "50 µL"
+  ),
+  `Volume x4` = c(
+    "10 µL",
+    "10 µL",
+    "4 µL",
+    "40 µL",
+    "2 µL",
+    "130 µL",
+    "-",
+    "-"
+  )
+)
+
+knitr::kable(pcr_mix)
+```
+
+### BioRad Thermal Cycler 
+```{r}
+#The thermal cycler is what amplifies the DNA fragment we chose, the following is how we set it up in the BioRad T100 Thermal Cycler machine. 
+
+library(knitr)
+
+t100_program <- data.frame(
+  Step = c(
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ),
+  Temperature = c(
+    "98 °C",
+    "98 °C",
+    "Primer-specific Tm",
+    "72 °C",
+    "Return to Step 2",
+    "72 °C",
+    "12 °C"
+  ),
+  Time = c(
+    "30 sec",
+    "10 sec",
+    "30 sec",
+    "Amplicon-dependent",
+    "35 cycles",
+    "10 min",
+    "Hold ∞"
+  ),
+  Notes = c(
+    "Initial denaturation",
+    "Denaturation",
+    "Annealing",
+    "Extension",
+    "Cycle Steps 2–4",
+    "Final extension",
+    "Infinite hold"
+  )
+)
+
+knitr::kable(t100_program)
+```
+
+
+### Gel Electrophoresis, Sample Loading 
+```{r}
+library(knitr)
+
+gel_loading <- data.frame(
+  Well = c(
+    "Sample well",
+    "DNA ladder well"
+  ),
+  Contents = c(
+    "4 µL PCR product + 1 µL loading dye",
+    "DNA ladder only"
+  ),
+  `Total volume loaded` = c(
+    "5 µL",
+    "5 µL"
+  )
+)
+
+knitr::kable(gel_loading)
+```
+
+### Gel Electrophoresis, Running Conditions
+```{r}
+gel_conditions <- data.frame(
+  Parameter = c(
+    "Voltage",
+    "Run time"
+  ),
+  Value = c(
+    "80 V",
+    "45 min"
+  )
+)
+
+knitr::kable(gel_conditions)
+```
+

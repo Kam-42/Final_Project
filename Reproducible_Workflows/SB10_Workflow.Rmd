@@ -1,0 +1,383 @@
+---
+title: "SB10_Workflow"
+author: "Kamerin Sandlin"
+date: "2026-04-14"
+output: 
+  
+  html_document: default
+  github_document: default
+---
+
+
+## This is a markdown file detailing my Soybean Virus Validation for soybean sample 9 and its input parameters.
+
+##### The Workflow (Simplified)
+```{r}
+#Raw Sequence Reads > Trimmomatic > Fastqc > Kraken2 > Trinity > BLASTn database > PCR > gel electrophoresis = Identified and Validated Viruses
+```
+
+##### Raw Sequence Reads
+```{r}
+#Raw sequence reads were the beginning input for my work in this project. They were sequenced from RNA samples of soybean tissue by Illumina short-read sequencing at North Carolina State University. 
+```
+
+##### Functions
+```{r}
+# FastQC
+make_fastqc_table <- function() {
+  df <- data.frame(
+    "Input Parameter" = c(
+      "Raw read data from your current history",
+      "Contaminant list",
+      "Adapter list",
+      "Submodule and limit specific file",
+      "Disable grouping of bases for reads >50bp",
+      "Lower limit on length of sequence",
+      "Length of kmer to look for"
+    ),
+    "Value" = c(
+      "Sample-specific FASTQ file",
+      "N/A",
+      "N/A",
+      "N/A",
+      "false",
+      "Not available",
+      "7"
+    )
+  )
+  
+  kable(df)
+}
+
+# Kraken2
+make_kraken2_table <- function() {
+  df <- data.frame(
+    "Input Parameter" = c(
+      "Single or paired reads",
+      "Input sequences",
+      "Print scientific names instead of just taxids",
+      "Confidence",
+      "Minimum base quality",
+      "Minimum hit groups",
+      "Enable quick operation",
+      "Split classified and unclassified outputs",
+      "Print a report with aggregate counts/clade to file",
+      "Select a Kraken2 database"
+    ),
+    "Value" = c(
+      "false",
+      "Trimmomatic output (R1 and R2 processed as single-ended multiple datasets)",
+      "false",
+      "0",
+      "0",
+      "2",
+      "false",
+      "true",
+      "false",
+      "viral2019-03"
+    )
+  )
+  
+  kable(df)
+}
+
+# BLASTn Database 
+library(knitr)
+
+make_blastn_table <- function() {
+  df <- data.frame(
+    "Input Parameter" = c(
+      "Program",
+      "Database",
+      "Query input method",
+      "Search type",
+      "Max target sequences",
+      "Expect threshold (E-value)",
+      "Word size",
+      "Match/Mismatch scores",
+      "Gap costs",
+      "Filter low complexity regions",
+      "Organism restriction",
+      "Output format"
+    ),
+    "Value" = c(
+      "BLASTn (NCBI web interface)",
+      "nt (nucleotide collection)",
+      "Pasted assembled contig sequence",
+      "Highly similar sequences (megablast)",
+      "Default (varies by run)",
+      "Default (0.05 unless changed)",
+      "Default (web-selected)",
+      "Default scoring matrix",
+      "Default gap penalties",
+      "Enabled (default setting)",
+      "None",
+      "HTML + alignment view"
+    )
+  )
+  
+  knitr::kable(df)
+}
+
+# PCR Components
+make_pcr_table <- function() {
+  df <- data.frame(
+    "Component" = c(
+      "Forward Primer",
+      "Reverse Primer",
+      "dNTP Mix",
+      "Phusion HF Buffer",
+      "Phusion Polymerase",
+      "Water",
+      "cDNA template",
+      "Total Volume per reaction"
+    ),
+    "Volume per Reaction" = c(
+      "2.5 uL",
+      "2.5 uL",
+      "1 uL",
+      "10 uL",
+      "0.5 uL",
+      "32.5 uL",
+      "1 uL",
+      "50 uL"
+    ),
+    "Volume x4" = c(
+      "10 uL",
+      "10 uL",
+      "4 uL",
+      "40 uL",
+      "2 uL",
+      "130 uL",
+      "-",
+      ""
+    )
+  )
+  
+  kable(df)
+}
+
+# BioRad T100 Thermal Cycler
+library(knitr)
+
+make_t100_table <- function() {
+  df <- data.frame(
+    "Step" = c("1", "2", "3", "4", "5", "6", "7"),
+    "Temperature (°C)" = c(
+      "98",
+      "98",
+      "Primer-specific Tm",
+      "72",
+      "Repeat Steps 2–4",
+      "72",
+      "12"
+    ),
+    "Time" = c(
+      "30 sec",
+      "10 sec",
+      "30 sec",
+      "Extension (amplicon-dependent)",
+      "35 cycles",
+      "10 min",
+      "Hold ∞"
+    ),
+    "Process" = c(
+      "Initial denaturation",
+      "Denaturation",
+      "Annealing",
+      "Extension",
+      "PCR cycling",
+      "Final extension",
+      "Infinite hold"
+    )
+  )
+  
+  knitr::kable(df)
+}
+
+# Gel Loading 
+library(knitr)
+make_gel_loading_table <- function() {
+  df <- data.frame(
+    "Well" = c("1", "2"),
+    "Sample" = c("DNA Ladder", "PCR Product"),
+    "Volume Loaded" = c("5 uL", "4 uL PCR product + 1 uL loading dye"),
+    "Notes" = c(
+      "Molecular size standard",
+      "Sample to verify amplicon size"
+    )
+  )
+  
+  kable(df)
+}
+
+# Gel Running
+library(knitr)
+
+make_gel_run_table <- function() {
+  df <- data.frame(
+    "Parameter" = c(
+      "Voltage",
+      "Run time",
+      "Gel type",
+      "Buffer system"
+    ),
+    "Value" = c(
+      "80 V",
+      "45 minutes",
+      "Agarose gel (standard % depending on amplicon size)",
+      "TAE or TBE (as used in lab)"
+    )
+  )
+  
+  knitr::kable(df)
+}
+```
+
+
+
+
+
+# NOTE: Trimmomatic and Trinity de novo Assembly do not have functions because input parameters vary for those tools throughout samples.
+
+
+##### Trimmomatic 
+```{r}
+library(knitr)
+
+SB10_Trimmomatic <- data.frame(
+  "Input Parameter" = c(
+    "Single-end or paired-end reads?",
+    "Input FASTQ file (R1/first of pair)",
+    "Input FASTQ file (R2/second of pair)",
+    "Perform initial ILLUMINACLIP step?",
+    "Select standard adapter sequences or provide custom?",
+    "Adapter sequences to use",
+    "Maximum mismatch count which will still allow a full match to be performed",
+    "How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment",
+    "How accurate the match between any adapter etc. sequence must be against a read",
+    "Minimum length of adapter that needs to be detected (PE specific/palindrome mode)",
+    "Always keep both reads (PE specific/palindrome mode)?",
+    "Trimmomatic operation",
+    "Number of bases to average across",
+    "Average quality required",
+    "Trimmomatic operation",
+    "Minimum length of reads to be kept",
+    "Quality score encoding",
+    "Output trimlog file?",
+    "Output trimmomatic log messages?"
+  ),
+  "Value" = c(
+    "pair_of_files",
+    "Soybean10_Classified forward reads.fastq.gz",
+    "Soybean10_Classified reverse reads.fastq.gz",
+    "true",
+    "standard",
+    "TruSeq2 (paired-ended, for Illumina GAII)",
+    "2",
+    "30",
+    "10",
+    "8",
+    "true",
+    "SLIDINGWINDOW",
+    "4",
+    "20",
+    "MINLEN",
+    "20",
+    "Nothing selected",
+    "false",
+    "false"
+  )
+)
+
+kable(SB10_Trimmomatic)
+```
+
+##### FastQC
+```{r}
+make_fastqc_table()
+```
+
+##### Kraken2 
+```{r}
+make_kraken2_table()
+```
+
+
+##### File Compression Correction
+```{r}
+# Galaxy improperly compresses the files of classified forward and reverse reads, so the reads must be taken out of Galaxy to be properly compressed into gzip format. Here, we do that by downloading the files, uncompressing then compressing them again in the Mac Terminal, and uploading the files back to Galaxy. The following is the MAC TERMINAL CODE to compress the forward and reverse read files, after downloading the files from Galaxy. 
+
+# %cd Desktop
+# mvSB10Classifiedforwardreads.fastsanger.gz SB10Classifiedforwardreads.fastqsanger
+# gzipSB10Classifiedforwardreads.fastqsanger
+#OUTPUT = correctly gzipped forward read file
+
+# mvSB10Classifiedreversereads.fastqsanger.gz SB10Classifiedreversereads.fastqsanger
+# gzipSB10Classifiedreversereads.fastqsanger
+#OUTPUT = Correctly gzipped reverse read file
+```
+
+##### Trinity 
+```{r}
+library(knitr)
+
+SB10trinity_params <- data.frame(`Input parameter` = c(
+    "Are you pooling sequence datasets?",
+    "Paired or single-end data?",
+    "Left/forward strand reads",
+    "Right/reverse strand reads",
+    "Strand specific data",
+    "Jaccard clip options",
+    "Run in silico normalization of reads",
+    "Minimum contig length",
+    "Use genome-guided mode",
+    "Minimum count for K-mers to be assembled"
+  ),
+  Value = c(
+    "true",
+    "paired",
+    "SB10Classifiedforwardreads.fastqsanger.gz",
+    "SB10Classifiedreversereads.fastqsanger.gz",
+    "false",
+    "false",
+    "true",
+    "200",
+    "false",
+    "1"
+  )
+)
+
+knitr::kable(SB10trinity_params)
+```
+
+##### BLASTn Database
+```{r}
+make_blastn_table()
+```
+
+##### Polymerase Chain Reaction 
+```{r}
+#A PCR mix was setup in order amplify the DNA fragment chosen by the primers that were designed. The following is the PCR Mix setup; 
+
+make_pcr_table()
+```
+
+##### BioRad T100 Thermal Cycler
+```{r}
+#The thermal cycler is what amplifies the DNA fragment we chose, the following is how we set it up in the BioRad T100 Thermal Cycler machine. 
+
+make_t100_table()
+```
+
+##### Gel Electrophoresis, Sample Loading 
+```{r}
+make_gel_loading_table()
+```
+
+
+##### Gel Electrophoresis, Running Conditions 
+```{r}
+make_gel_run_table()
+```
+
