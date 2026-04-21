@@ -4,6 +4,14 @@ These are files associated with my final project's reproducible workflow.
 ## Pipeline Diagram
 ![Workflow Diagram](workflow_diagram.png)
 
+## Bioinformatics Tools Used
+-Trimmomatic
+-FastQC
+-Kraken2
+-Trinity de novo Assembly
+-BLASTn Database
+
+
 
 ## Repository Structure
 ```
