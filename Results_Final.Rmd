@@ -1,0 +1,74 @@
+---
+title: "Results_Final"
+author: "Kamerin Sandlin"
+date: "2026-04-14"
+output: 
+
+    html_document: default
+    github_document: default
+---
+
+## We identified soybean mosaic virus, tomato spotted wilt virus, peanut muttle virus, and pea enation mosaic virus -1. The following are depictions and more data on these results. 
+
+# Install these packages if not installed already
+```{r}
+install.packages("tidyr")
+install.packages("ggplot2")
+install.packages("dplyr")
+```
+
+# Library these packages
+```{r}
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+
+```
+
+# Data 
+```{r}
+samples <- data.frame(
+  Sample = c("SB1", "SB2-3", "SB6", "SB7-8", "SB9", "SB10"),
+  Field = c("Old Rotation", "Old Rotation", "Old Rotation",
+            "Old Rotation", "Cullers", "Cullers"),
+  SMV = c(1, 1, 1, 1, 1, 1),
+  TSWV = c(0, 0, 0, 1, 1, 0),
+  PEMV = c(1, 0, 0, 0, 0, 0),
+  PMV = c(0, 0, 1, 0, 0, 0)
+)
+
+sample_order <- c("SB1","SB2-3","SB6","SB7-8","SB9","SB10")
+samples$Sample <- factor(samples$Sample, levels = sample_order)
+
+plot_data <- samples |>
+  pivot_longer(cols = SMV:PMV,
+               names_to = "Virus",
+               values_to = "Presence") |>
+  filter(Presence == 1)
+```
+
+
+# Plotted Results 
+```{r}
+ggplot(plot_data, aes(x = Virus, y = Sample)) +
+  
+  geom_point(size = 5, color = "blue") +
+  
+  theme_classic() +
+  
+  labs(
+    title = "Virus Detection Across Soybean Samples",
+    x = "Virus",
+    y = "Sample",
+    subtitle = "Black sample labels = The Old Rotation | Red sample labels = Cullers"
+  ) +
+  
+  theme(
+    axis.text.y = element_text(
+      color = ifelse(samples$Field == "Old Rotation", "black", "red"),
+      face = "bold",
+      size = 12
+    )
+  )
+```
+
