@@ -3,72 +3,101 @@ title: "Results_Final"
 author: "Kamerin Sandlin"
 date: "2026-04-14"
 output: 
-
-    html_document: default
     github_document: default
+    html_document: default
 ---
 
-## We identified soybean mosaic virus, tomato spotted wilt virus, peanut muttle virus, and pea enation mosaic virus -1. The following are depictions and more data on these results. 
+### We identified soybean mosaic virus, tomato spotted wilt virus, peanut muttle virus, and pea enation mosaic virus -1 in the seven seoybean samples analyzed. The following are depictions and more data on these results. 
 
-# Install these packages if not installed already
-```{r}
-install.packages("tidyr")
-install.packages("ggplot2")
-install.packages("dplyr")
-```
+# NOTE
+### This is the progress made to the point of April. We are still working to validate tomato spotted wilt virus in soybean 1, 2-3, and 6. 
 
-# Library these packages
 ```{r}
-library(tidyr)
 library(ggplot2)
 library(dplyr)
+library(tidyr)
 
-```
-
-# Data 
-```{r}
-samples <- data.frame(
-  Sample = c("SB1", "SB2-3", "SB6", "SB7-8", "SB9", "SB10"),
-  Field = c("Old Rotation", "Old Rotation", "Old Rotation",
-            "Old Rotation", "Cullers", "Cullers"),
-  SMV = c(1, 1, 1, 1, 1, 1),
-  TSWV = c(0, 0, 0, 1, 1, 0),
-  PEMV = c(1, 0, 0, 0, 0, 0),
-  PMV = c(0, 0, 1, 0, 0, 0)
+# Data
+data <- data.frame(
+    Sample = c("SB1", "SB2-3", "SB5", "SB6", "SB7-8", "SB9", "SB10"),
+    Field = c("Old Rotation", "Old Rotation", "Cullers", "Old Rotation", "Old Rotation", "Cullers", "Cullers"),
+    SMV = c(1,1,0,1,1,1,1),
+    TSWV = c(0,0,0,0,1,1,0),
+    PEMV = c(1,0,0,0,0,0,0),
+    PMV = c(0,0,0,1,0,0,0)
 )
 
-sample_order <- c("SB1","SB2-3","SB6","SB7-8","SB9","SB10")
-samples$Sample <- factor(samples$Sample, levels = sample_order)
+# Convert to long format
+data_long <- data %>%
+    pivot_longer(cols = SMV:PMV, names_to = "Virus", values_to = "Presence")
 
-plot_data <- samples |>
-  pivot_longer(cols = SMV:PMV,
-               names_to = "Virus",
-               values_to = "Presence") |>
-  filter(Presence == 1)
+# Order samples
+data_long$Sample <- factor(data_long$Sample,
+                           levels = c("SB1", "SB2-3", "SB5", "SB6", "SB7-8", "SB9", "SB10"))
+
+# Plot
+ggplot(data_long, aes(x = Virus, y = Sample, fill = factor(Presence))) +
+    geom_tile(color = "black") +
+    
+    scale_fill_manual(
+        name = "Virus Detection",
+        values = c("0" = "white", "1" = "blue"),
+        labels = c("0" = "No detection", "1" = "Virus detected")
+    ) +
+    
+    theme_minimal() +
+    theme(
+        axis.text.y = element_text(
+            color = ifelse(data$Field[match(levels(data_long$Sample), data$Sample)] == "Old Rotation",
+                           "black", "red"),
+            size = 12
+        ),
+        axis.title.y = element_blank()
+    ) +
+    
+    labs(
+        x = "Virus",
+        y = "Sample",
+        title = "Virus Presence Across Soybean Samples",
+        subtitle = "Blue = Virus Detected | Black = Old Rotation, Red = Cullers"
+    )
 ```
 
-
-# Plotted Results 
+## Virus Abundance by Field Location 
 ```{r}
-ggplot(plot_data, aes(x = Virus, y = Sample)) +
-  
-  geom_point(size = 5, color = "blue") +
-  
-  theme_classic() +
-  
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Data
+data <- data.frame(
+  Sample = c("SB1", "SB2-3", "SB5", "SB6", "SB7-8", "SB9", "SB10"),
+  Field = c("Old Rotation", "Old Rotation", "Cullers", "Old Rotation", "Old Rotation", "Cullers", "Cullers"),
+  SMV = c(1,1,0,1,1,1,1),
+  TSWV = c(0,0,0,0,1,1,0),
+  PEMV = c(1,0,0,0,0,0,0),
+  PMV = c(0,0,0,1,0,0,0)
+)
+
+# Convert to long format
+data_long <- data %>%
+  pivot_longer(cols = SMV:PMV, names_to = "Virus", values_to = "Presence")
+
+# Summarize total virus detections by field
+field_summary <- data_long %>%
+  group_by(Field) %>%
+  summarise(Total_Virus_Detections = sum(Presence))
+
+# Plot
+ggplot(field_summary, aes(x = Field, y = Total_Virus_Detections, fill = Field)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("Old Rotation" = "black", "Cullers" = "red")) +
+  theme_minimal() +
   labs(
-    title = "Virus Detection Across Soybean Samples",
-    x = "Virus",
-    y = "Sample",
-    subtitle = "Black sample labels = The Old Rotation | Red sample labels = Cullers"
+    title = "Virus Abundance by Field Location",
+    x = "Field Location",
+    y = "Total Virus Detections"
   ) +
-  
-  theme(
-    axis.text.y = element_text(
-      color = ifelse(samples$Field == "Old Rotation", "black", "red"),
-      face = "bold",
-      size = 12
-    )
-  )
+  theme(legend.position = "none")
 ```
 
