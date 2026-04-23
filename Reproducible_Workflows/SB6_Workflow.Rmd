@@ -240,7 +240,7 @@ make_gel_run_table <- function() {
 # NOTE: Trimmomatic and Trinity de novo Assembly do not have functions because input parameters vary for those tools throughout samples.
 
 
-##### Trimmomatic 
+##### Trimmomatic (Galaxy Version 0.39+galaxy2)
 ```{r}
 library(knitr)
 
@@ -290,14 +290,15 @@ SB6_Trimmomatic <- data.frame(
 )
 
 kable(SB6_Trimmomatic)
+
 ```
 
-##### FastQC
+##### FastQC (Galaxy Version 0.74+galaxy1)
 ```{r}
 make_fastqc_table()
 ```
 
-##### Kraken2 
+##### Kraken2 (Galaxy Version 2.17.1+galaxy0)
 ```{r}
 make_kraken2_table()
 ```
@@ -317,7 +318,7 @@ make_kraken2_table()
 #OUTPUT = Correctly gzipped reverse read file
 ```
 
-##### Trinity 
+##### Trinity (Galaxy Version 2.15.1+galaxy1)
 ```{r}
 library(knitr)
 
