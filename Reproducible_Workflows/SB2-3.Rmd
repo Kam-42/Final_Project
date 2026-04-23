@@ -379,3 +379,30 @@ make_gel_loading_table()
 ```{r}
 make_gel_run_table()
 ```
+
+#### Bioinformatics Results 
+```{r}
+library(ggplot2)
+
+results <- data.frame(
+  Virus = c("Soybean mosaic virus (SMV)", 
+            "Tomato spotted wilt virus (TSWV)")
+)
+
+# Plot
+ggplot(results, aes(x = Virus, y = 1)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "Detected Viruses in SB2-3",
+    x = "",
+    y = ""
+  ) +
+  theme(
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
