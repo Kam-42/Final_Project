@@ -7,9 +7,12 @@ These are tools and files associated with my final project's reproducible workfl
 - dplyr
 - tidyr
 
-## Note on Data Availability
-Raw data for samples are not here on github due to being unreadible and large files. Those raw sequence reads are available via Final_Project folder that was sent to Dr. Noel. 
-Resulting Assembled Transcripts are also available via the Final_Project folder sent to Dr. Noel but not on github due to unreadability. 
+## Raw Data
+- Raw data for each sample consist of two files (forward and reverse RNA sequence reads) each 1-2GB in size, and there are seven samples being analyzed.  
+- Raw data for samples are not here on github due to being unreadible and large files. Those raw sequence reads are available via Final_Project folder that was sent to Dr. Noel. 
+- Resulting Assembled Transcripts are also available via the Final_Project folder sent to Dr. Noel but not on github due to size and unreadability.
+- IMPORTANT: The starting raw data input at the beginning of the workflow is SoybeanX_R1combined.fastq.gz and SoybeanX_R2combined.fastq.gz
+
 
 ## Bioinformatics Tools Used 
 #### Version Control listed in sample workflows.
