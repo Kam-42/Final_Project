@@ -77,7 +77,7 @@ Final_Project/
 └── Assembled_Transcripts/
     ├── SB1transcripts_1000bp.fasta
     ├── SB2-3 Assembled Transcripts with matched ID.fasta
-    ├── 
+    ├── SB5AssembledTranscripts.fasta
     ├── SB6AssembledTranscripts.fasta
     ├── SB7-8AssembledTranscripts.fasta
     ├── SB9AssembledTranscripts.fasta
