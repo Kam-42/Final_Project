@@ -237,10 +237,10 @@ make_gel_run_table <- function() {
 
 
 
-# NOTE: Trimmomatic and Trinity de novo Assembly do not have functions because input parameters vary for those tools throughout samples.
+##### NOTE: Trimmomatic and Trinity de novo Assembly do not have functions because input parameters vary for those tools throughout samples.
 
 
-##### Trimmomatic (Galaxy Version 0.39+galaxy2) 
+### Trimmomatic (Galaxy Version 0.39+galaxy2) 
 ```{r}
 library(knitr)
 
@@ -292,18 +292,18 @@ SB23_Trimmomatic <- data.frame(
 kable(SB23_Trimmomatic)
 ```
 
-##### FastQC (Galaxy Version 0.74+galaxy1)
+### FastQC (Galaxy Version 0.74+galaxy1)
 ```{r}
 make_fastqc_table()
 ```
 
-##### Kraken2 (Galaxy Version 2.17.1+galaxy0)
+### Kraken2 (Galaxy Version 2.17.1+galaxy0)
 ```{r}
 make_kraken2_table()
 ```
 
 
-##### File Compression Correction
+### File Compression Correction
 ```{r}
 # Galaxy improperly compresses the files of classified forward and reverse reads, so the reads must be taken out of Galaxy to be properly compressed into gzip format. Here, we do that by downloading the files, uncompressing then compressing them again in the Mac Terminal, and uploading the files back to Galaxy. The following is the MAC TERMINAL CODE to compress the forward and reverse read files, after downloading the files from Galaxy. 
 
@@ -317,7 +317,7 @@ make_kraken2_table()
 #OUTPUT = Correctly gzipped reverse read file
 ```
 
-##### Trinity (Galaxy Version 2.15.1+galaxy1) 
+### Trinity (Galaxy Version 2.15.1+galaxy1) 
 ```{r}
 library(knitr)
 
@@ -350,37 +350,37 @@ SB23trinity_params <- data.frame(`Input parameter` = c(
 knitr::kable(SB23trinity_params)
 ```
 
-##### BLASTn Database
+### BLASTn Database
 ```{r}
 make_blastn_table()
 ```
 
-##### Polymerase Chain Reaction 
+### Polymerase Chain Reaction 
 ```{r}
 #A PCR mix was setup in order amplify the DNA fragment chosen by the primers that were designed. The following is the PCR Mix setup; 
 
 make_pcr_table()
 ```
 
-##### BioRad T100 Thermal Cycler
+### BioRad T100 Thermal Cycler
 ```{r}
 #The thermal cycler is what amplifies the DNA fragment we chose, the following is how we set it up in the BioRad T100 Thermal Cycler machine. 
 
 make_t100_table()
 ```
 
-##### Gel Electrophoresis, Sample Loading 
+### Gel Electrophoresis, Sample Loading 
 ```{r}
 make_gel_loading_table()
 ```
 
 
-##### Gel Electrophoresis, Running Conditions 
+### Gel Electrophoresis, Running Conditions 
 ```{r}
 make_gel_run_table()
 ```
 
-#### Bioinformatics Results 
+### Bioinformatics Results 
 ```{r}
 library(ggplot2)
 
