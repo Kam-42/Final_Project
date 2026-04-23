@@ -235,7 +235,7 @@ make_gel_run_table <- function() {
 ## NOTE: Trimmomatic and Trinity de novo Assembly do not have functions because input parameters vary for those tools throughout samples.
 
 
-##### Trimmomatic
+##### Trimmomatic (Galaxy Version 0.39+galaxy2)
 ```{r}
 trimmomatic_params <- data.frame(
   `Input parameter` = c(
@@ -283,12 +283,9 @@ trimmomatic_params <- data.frame(
 )
 
 knitr::kable(trimmomatic_params)
-
-# Galaxy Version 0.39+galaxy2
-
 ```
 
-##### FastQC
+##### FastQC (Galaxy Version 0.74+galaxy1)
 ```{r}
 library(knitr)
 
@@ -339,11 +336,9 @@ SB9fastqc_params <- data.frame(
 )
 
 knitr::kable(SB9fastqc_params)
-
-# Galaxy Version 0.74+galaxy1
 ```
 
-##### Kraken2
+##### Kraken2 (Galaxy Version 2.17.1+galaxy0)
 ```{r}
 library(knitr)
 
@@ -414,7 +409,7 @@ knitr::kable(SB9kraken2_outputs)
 ```
 
 
-##### Trinity 
+##### Trinity (Galaxy Version 2.15.1+galaxy1)
 ```{r}
 library(knitr)
 
@@ -446,8 +441,6 @@ SB9trinity_params <- data.frame(
 )
 
 knitr::kable(SB9trinity_params)
-
-# Galaxy Version 2.15.1+galaxy1
 ```
 
 ##### BLASTn Database
