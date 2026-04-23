@@ -364,3 +364,29 @@ gel_conditions <- data.frame(
 knitr::kable(gel_conditions)
 ```
 
+#### Bioinformatics Results
+```{r}
+library(ggplot2)
+
+# Viruses detected in SB7-8
+sb7_8_results <- data.frame(
+  Virus = c("Soybean mosaic virus (SMV)", "Tomato spotted wilt virus (TSWV)")
+)
+
+# Plot
+ggplot(sb7_8_results, aes(x = Virus, y = 1)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "Detected Viruses in SB7-8",
+    x = "",
+    y = ""
+  ) +
+  theme(
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
