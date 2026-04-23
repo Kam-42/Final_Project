@@ -380,3 +380,28 @@ make_gel_loading_table()
 make_gel_run_table()
 ```
 
+#### Bioinformatics Results
+```{r}
+library(ggplot2)
+
+# Empty result for SB5
+results <- data.frame(
+  Virus = character(0)
+)
+
+# Plot
+ggplot(results, aes(x = Virus, y = 1)) +
+  geom_blank() +
+  theme_minimal() +
+  labs(
+    title = "Detected Viruses in SB5",
+    x = "",
+    y = ""
+  ) +
+  annotate("text", x = 1, y = 1, label = "No viruses detected", size = 6) +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
