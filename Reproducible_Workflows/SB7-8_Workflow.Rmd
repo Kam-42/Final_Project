@@ -18,6 +18,220 @@ output: html_document
 #Raw sequence reads were the beginning input for my work in this project. They were sequenced from RNA samples of soybean tissue by Illumina short-read sequencing at North Carolina State University. 
 ```
 
+##### Functions
+```{r}
+# FastQC
+make_fastqc_table <- function() {
+  df <- data.frame(
+    "Input Parameter" = c(
+      "Raw read data from your current history",
+      "Contaminant list",
+      "Adapter list",
+      "Submodule and limit specific file",
+      "Disable grouping of bases for reads >50bp",
+      "Lower limit on length of sequence",
+      "Length of kmer to look for"
+    ),
+    "Value" = c(
+      "Sample-specific FASTQ file",
+      "N/A",
+      "N/A",
+      "N/A",
+      "false",
+      "Not available",
+      "7"
+    )
+  )
+  
+  kable(df)
+}
+
+# Kraken2
+make_kraken2_table <- function() {
+  df <- data.frame(
+    "Input Parameter" = c(
+      "Single or paired reads",
+      "Input sequences",
+      "Print scientific names instead of just taxids",
+      "Confidence",
+      "Minimum base quality",
+      "Minimum hit groups",
+      "Enable quick operation",
+      "Split classified and unclassified outputs",
+      "Print a report with aggregate counts/clade to file",
+      "Select a Kraken2 database"
+    ),
+    "Value" = c(
+      "false",
+      "Trimmomatic output (R1 and R2 processed as single-ended multiple datasets)",
+      "false",
+      "0",
+      "0",
+      "2",
+      "false",
+      "true",
+      "false",
+      "viral2019-03"
+    )
+  )
+  
+  kable(df)
+}
+
+# BLASTn Database 
+library(knitr)
+
+make_blastn_table <- function() {
+  df <- data.frame(
+    "Input Parameter" = c(
+      "Program",
+      "Database",
+      "Query input method",
+      "Search type",
+      "Max target sequences",
+      "Expect threshold (E-value)",
+      "Word size",
+      "Match/Mismatch scores",
+      "Gap costs",
+      "Filter low complexity regions",
+      "Organism restriction",
+      "Output format"
+    ),
+    "Value" = c(
+      "BLASTn (NCBI web interface)",
+      "nt (nucleotide collection)",
+      "Pasted assembled contig sequence",
+      "Highly similar sequences (megablast)",
+      "Default (varies by run)",
+      "Default (0.05 unless changed)",
+      "Default (web-selected)",
+      "Default scoring matrix",
+      "Default gap penalties",
+      "Enabled (default setting)",
+      "None",
+      "HTML + alignment view"
+    )
+  )
+  
+  knitr::kable(df)
+}
+
+# PCR Components
+make_pcr_table <- function() {
+  df <- data.frame(
+    "Component" = c(
+      "Forward Primer",
+      "Reverse Primer",
+      "dNTP Mix",
+      "Phusion HF Buffer",
+      "Phusion Polymerase",
+      "Water",
+      "cDNA template",
+      "Total Volume per reaction"
+    ),
+    "Volume per Reaction" = c(
+      "2.5 uL",
+      "2.5 uL",
+      "1 uL",
+      "10 uL",
+      "0.5 uL",
+      "32.5 uL",
+      "1 uL",
+      "50 uL"
+    ),
+    "Volume x4" = c(
+      "10 uL",
+      "10 uL",
+      "4 uL",
+      "40 uL",
+      "2 uL",
+      "130 uL",
+      "-",
+      ""
+    )
+  )
+  
+  kable(df)
+}
+
+# BioRad T100 Thermal Cycler
+library(knitr)
+
+make_t100_table <- function() {
+  df <- data.frame(
+    "Step" = c("1", "2", "3", "4", "5", "6", "7"),
+    "Temperature (°C)" = c(
+      "98",
+      "98",
+      "Primer-specific Tm",
+      "72",
+      "Repeat Steps 2–4",
+      "72",
+      "12"
+    ),
+    "Time" = c(
+      "30 sec",
+      "10 sec",
+      "30 sec",
+      "Extension (amplicon-dependent)",
+      "35 cycles",
+      "10 min",
+      "Hold ∞"
+    ),
+    "Process" = c(
+      "Initial denaturation",
+      "Denaturation",
+      "Annealing",
+      "Extension",
+      "PCR cycling",
+      "Final extension",
+      "Infinite hold"
+    )
+  )
+  
+  knitr::kable(df)
+}
+
+# Gel Loading 
+library(knitr)
+make_gel_loading_table <- function() {
+  df <- data.frame(
+    "Well" = c("1", "2"),
+    "Sample" = c("DNA Ladder", "PCR Product"),
+    "Volume Loaded" = c("5 uL", "4 uL PCR product + 1 uL loading dye"),
+    "Notes" = c(
+      "Molecular size standard",
+      "Sample to verify amplicon size"
+    )
+  )
+  
+  kable(df)
+}
+
+# Gel Running
+library(knitr)
+
+make_gel_run_table <- function() {
+  df <- data.frame(
+    "Parameter" = c(
+      "Voltage",
+      "Run time",
+      "Gel type",
+      "Buffer system"
+    ),
+    "Value" = c(
+      "80 V",
+      "45 minutes",
+      "Agarose gel (standard % depending on amplicon size)",
+      "TAE or TBE (as used in lab)"
+    )
+  )
+  
+  knitr::kable(df)
+}
+```
+##### NOTE: Trimmomatic and Trinity de novo Assembly do not have functions because input parameters vary for those tools throughout samples.
+
 ### Trimmomatic (Galaxy Version 0.39+galaxy2)
 ```{r}
 library(knitr)
