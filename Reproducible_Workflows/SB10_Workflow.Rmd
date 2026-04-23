@@ -381,3 +381,29 @@ make_gel_loading_table()
 make_gel_run_table()
 ```
 
+#### Bioinformatics Results
+```{r}
+library(ggplot2)
+
+# Viruses detected in SB10
+sb10_results <- data.frame(
+  Virus = c("Soybean mosaic virus (SMV)")
+)
+
+# Plot
+ggplot(sb10_results, aes(x = Virus, y = 1)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "Detected Viruses in SB10",
+    x = "",
+    y = ""
+  ) +
+  theme(
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
