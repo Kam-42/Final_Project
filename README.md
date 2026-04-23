@@ -1,23 +1,26 @@
 # Final_Project
-These are files associated with my final project's reproducible workflow. 
+These are tools and files associated with my final project's reproducible workflow. 
 
-## Pipeline Diagram
-![Workflow Diagram](workflow_diagram.png)
 
 ## Note on Data Availability
 Raw data for samples are not here on github due to being unreadible and large files. Those raw sequence reads are available via Final_Project folder that was sent to Dr. Noel. 
 Resulting Assembled Transcripts are also available via the Final_Project folder sent to Dr. Noel but not on github due to unreadability. 
 
-## Bioinformatics Tools Used
+## Bioinformatics Tools Used 
+#### Version Control listed in sample workflows.
 -Trimmomatic
 -FastQC
 -Kraken2
--Trinity de novo Assembly
--BLASTn Database
+-Trinity 
+-BLASTn Web Database 
+
+## Wet lab experiments used
+- Polymerase Chain Reaction for target virus amplification
+- Gel Electrophoresis to validate target virus was amplified
 
 
 
-## Repository Structure
+## 'Final_Project' Folder Structure
 ```
 Final_Project/
 ├── Final_Project.Rproj
