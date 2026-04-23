@@ -17,7 +17,11 @@ output:
 
 ##### Raw Sequence Reads
 ```{r}
-#Raw sequence reads were the beginning input for my work in this project. They were sequenced from RNA samples of soybean tissue by Illumina short-read sequencing at North Carolina State University. 
+#Raw sequence reads were the beginning input for my work in this project. They were sequenced from RNA samples of soybean tissue by Illumina short-read sequencing at North Carolina State University.
+#NOTE: I started with classified reads instead of raw reads here.
+
+#File 1: /Soybean1_Classified forward reads.fastq (3).gz"
+#File 2: /Soybean1_Classified reverse reads.fastq (3).gz"
 ```
 
 ##### Functions
