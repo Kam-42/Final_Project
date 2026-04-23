@@ -1,6 +1,11 @@
 # Final_Project
 These are tools and files associated with my final project's reproducible workflow. 
 
+## Packages to be installed on R studio
+- knitr
+- ggplot2
+- dplyr
+- tidyr
 
 ## Note on Data Availability
 Raw data for samples are not here on github due to being unreadible and large files. Those raw sequence reads are available via Final_Project folder that was sent to Dr. Noel. 
