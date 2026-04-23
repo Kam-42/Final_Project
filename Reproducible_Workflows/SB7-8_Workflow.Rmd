@@ -173,7 +173,7 @@ knitr::kable(kraken2_outputs)
 ```
 
 
-### Trinity (Galaxy Version 2.15.1+galaxy1)
+### Trinity 
 ```{r}
 library(knitr)
 
