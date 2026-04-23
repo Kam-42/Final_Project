@@ -173,7 +173,7 @@ knitr::kable(kraken2_outputs)
 ```
 
 
-### Trinity 
+### Trinity (Galaxy Version 2.15.1+galaxy1)
 ```{r}
 library(knitr)
 
@@ -205,8 +205,6 @@ trinity_params <- data.frame(
 )
 
 knitr::kable(trinity_params)
-
-#Galaxy Version 2.15.1+galaxy1
 ```
 
 ### BLASTn Database
