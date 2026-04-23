@@ -291,16 +291,22 @@ SB10_Trimmomatic <- data.frame(
 )
 
 kable(SB10_Trimmomatic)
+
+# Galaxy Version 0.39+galaxy2
 ```
 
 ##### FastQC
 ```{r}
 make_fastqc_table()
+
+# Galaxy Version 0.74+galaxy1
 ```
 
 ##### Kraken2 
 ```{r}
 make_kraken2_table()
+
+# Galaxy Version 2.17.1+galaxy0
 ```
 
 
@@ -349,6 +355,8 @@ SB10trinity_params <- data.frame(`Input parameter` = c(
 )
 
 knitr::kable(SB10trinity_params)
+
+# Galaxy Version 2.15.1+galaxy1
 ```
 
 ##### BLASTn Database
