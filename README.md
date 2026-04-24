@@ -1,6 +1,9 @@
 # Final_Project
 These are tools and files associated with my final project's reproducible workflow. 
 
+## The Goal of Research
+We are seeking to identify and validate the presence of plant viruses within seven soybean samples using RNA sequencing.
+
 ## Packages to be installed on R studio
 - knitr
 - ggplot2
